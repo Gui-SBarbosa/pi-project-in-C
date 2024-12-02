@@ -1,83 +1,58 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <locale.h>
 
 int main()
 {
-  char nome[3][100], sexo[3][10], naturalidade[3][30], confirmacao[3][3], observacao[3][100];
-  int i, idade[3];
+  setlocale(LC_ALL, "Portuguese_Brasil");
 
-  for (i = 0; i < 3; i++)
+  printf("Este programa permite que você avalie o progresso de um projeto em cinco etapas:\n");
+  printf("1. Levantamento de Requisitos\n");
+  printf("2. Arquitetura e Design\n");
+  printf("3. Desenvolvimento\n");
+  printf("4. Testes\n");
+  printf("5. Implantação\n");
+  printf("\nVocê pode adicionar valores entre 1 e 5 para cada etapa.\n");
+  printf("O valor 5 é o máximo e indica que a etapa está concluída.\n");
+  printf("O programa solicitará o progresso de uma etapa de cada vez e só avançará\n");
+  printf("para a próxima etapa quando a etapa atual atingir o valor 5.\n\n");
+
+  int i, progresso[5] = {0}; // Inicializa o progresso de cada etapa com 0
+  char *fases[5] = {"Levantamento de Requisitos", "Arquitetura e Design", "Desenvolvimento", "Testes", "Implantação"};
+  int entrada;
+
+  // Itera sobre cada etapa até que todas sejam concluídas
+  for (i = 0; i < 5; i++)
   {
-    // Proteção de erro para garantir que o nome tenha mais que 3 caracteres
-    do
+    // Enquanto a etapa atual não atingir o valor 5, continue pedindo entradas
+    while (progresso[i] < 5)
     {
-      printf("Nome Completo: ");
-      fgets(nome[i], 100, stdin);
-      nome[i][strcspn(nome[i], "\n")] = '\0'; // Remove o caractere de nova linha
-    } while (strlen(nome[i]) < 3);
+      printf("\n\t%s (atual: %d). Quanto deseja adicionar? ", fases[i], progresso[i]);
+      scanf("%d", &entrada);
 
-    // Coletando o sexo do usuário
-    strcpy(sexo[i], ""); // Inicializa com string vazia
-    while (strcmp("Masc", sexo[i]) != 0 && strcmp("Fem", sexo[i]) != 0)
-    {
-      printf("Qual sexo - Fem | Masc: ");
-      scanf("%s", sexo[i]);
+      // Valida a entrada
+      if (entrada < 1 || entrada > 5)
+      {
+        printf("\nValor inválido! Digite um número entre 1 e 5.\n");
+        continue; // Solicita novamente a entrada
+      }
+
+      // Atualiza o progresso, garantindo que não ultrapasse 5
+      progresso[i] += entrada;
+      if (progresso[i] > 5)
+      {
+        progresso[i] = 5; // Ajusta para não ultrapassar 5
+      }
+
+      // Exibe o progresso atualizado
+      printf("\nProgresso atualizado de %s: %d\n", fases[i], progresso[i]);
     }
 
-    // Coletando idade do usuário e garantindo que seja um número positivo
-    do
-    {
-      printf("Idade: ");
-      scanf("%i", &idade[i]);
-    } while (idade[i] < 1 || idade[i] > 100);
-
-    getchar();
-
-    // Coletando a naturalidade
-    do
-    {
-      printf("Naturalidade: ");
-      fgets(naturalidade[i], 30, stdin);
-      naturalidade[i][strcspn(naturalidade[i], "\n")] = '\0'; // Remove nova linha
-    } while (strlen(naturalidade[i]) < 1);
-
-    // Coletando a confirmação e observação
-    while (strcmp("Sim", confirmacao[i]) != 0 && strcmp("Nao", confirmacao[i]) != 0)
-    {
-      printf("Alguma observação - Sim ou Nao? ");
-      scanf("%s", confirmacao[i]);
-      getchar();
-
-      if (strcmp(confirmacao[i], "Sim") == 0)
-      {
-        printf("Qual a observação? (limite 100 char) \n");
-        fgets(observacao[i], 100, stdin);
-        observacao[i][strcspn(observacao[i], "\n")] = '\0'; // Remove nova linha
-      }
-      else if (strcmp(confirmacao[i], "Nao") == 0)
-      {
-        strcpy(observacao[i], "N/A");
-      }
-      else
-      {
-        printf("\nValor inválido!\n\n");
-      }
-    }
-
-    system("cls");
+    // Indica que a etapa atual foi concluída
+    printf("\n%s está concluído!\n", fases[i]);
   }
 
-  for (i = 0; i < 3; i++)
-  {
-    printf("Paciente numero %i", i + 1);
-    printf("\n\tNome: %s", nome[i]);
-    printf("\n\tIdade: %d", idade[i]);
-    printf("\n\tSexo: %s", sexo[i]);
-    printf("\n\tNaturalidade: %s", naturalidade[i]);
-    printf("\n\tObservacao: %s", observacao[i]);
-    printf("\n");
-  }
-
+  system("cls");
+  printf("\nTodas as etapas estão concluídas!\n");
   return 0;
 }
