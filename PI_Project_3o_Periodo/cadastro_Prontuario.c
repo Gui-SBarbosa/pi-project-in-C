@@ -337,8 +337,8 @@ void atualizar()
     if (prontuarios[i].id == id && prontuarios[i].ativo == 1)
     {
       printf("\nFuncionário encontrado. O que deseja atualizar?\n");
-      printf("1. Nome do Médico\n");
-      printf("2. Nome do Paciente\n");
+      printf("1. Nome do Paciente\n");
+      printf("2. Nome do Médico\n");
       printf("3. Idade\n");
       printf("4. Sexo\n");
       printf("5. Contato\n");
